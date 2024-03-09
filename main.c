@@ -49,8 +49,21 @@ void right_mouse_up() {
     update_mouse_button(&input);
 }
 
-void move_mouse();
+void move_mouse(int dx, int dy) {
+    // mouse move input
+    INPUT input;
+    input.mi.dwFlags = MOUSEEVENTF_MOVE;
+    // get mouse pos
+    POINT cursor;
+    get_pos(&cursor);
+
+    input.type = INPUT_MOUSE;
+    input.mi.dx = dx;
+    input.mi.dy = dy;
+    SendInput(1, &input, sizeof(INPUT));
+}
 
 int main() {
+    move_mouse(100, 100);
     return 1;
 }
