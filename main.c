@@ -14,16 +14,33 @@ int get_pos(POINT* cursor) {
     return GetCursorPos(cursor);
 }
 
-void left_click_mouse();
+void click_mouse(INPUT* input) {
+    // get mouse pos
+    POINT cursor;
+    get_pos(&cursor);
 
-void right_click_mouse();
+    input->type = INPUT_MOUSE;
+    input->mi.dx = cursor.x;
+    input->mi.dy = cursor.y;
+    SendInput(1, input, sizeof(INPUT));
+}
+
+void left_click_mouse() {
+    INPUT input;
+    input.mi.dwFlags = MOUSEEVENTF_LEFTDOWN;
+    click_mouse(&input);
+}
+
+void right_click_mouse() {
+    INPUT input;
+    input.mi.dwFlags = MOUSEEVENTF_RIGHTDOWN;
+    click_mouse(&input);
+}
 
 void move_mouse();
 
 int main() {
-    POINT cursor;
-    if (get_pos(&cursor))
-        printf("X: %u, Y: %u\n", cursor.x, cursor.y);
+    right_click_mouse();
 
     return 1;
 }
