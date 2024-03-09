@@ -6,9 +6,13 @@
 
 int get_mouse_position(POINT *cursor);
 
-void left_click_mouse();
+void left_mouse_down();
 
-void right_click_mouse();
+void left_mouse_up();
+
+void right_mouse_down();
+
+void right_mouse_up();
 
 void move_mouse();
 

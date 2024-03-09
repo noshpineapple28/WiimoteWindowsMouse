@@ -14,7 +14,7 @@ int get_pos(POINT* cursor) {
     return GetCursorPos(cursor);
 }
 
-void click_mouse(INPUT* input) {
+void update_mouse_button(INPUT* input) {
     // get mouse pos
     POINT cursor;
     get_pos(&cursor);
@@ -25,22 +25,32 @@ void click_mouse(INPUT* input) {
     SendInput(1, input, sizeof(INPUT));
 }
 
-void left_click_mouse() {
+void left_mouse_down() {
     INPUT input;
     input.mi.dwFlags = MOUSEEVENTF_LEFTDOWN;
-    click_mouse(&input);
+    update_mouse_button(&input);
 }
 
-void right_click_mouse() {
+void left_mouse_up() {
+    INPUT input;
+    input.mi.dwFlags = MOUSEEVENTF_LEFTUP;
+    update_mouse_button(&input);
+}
+
+void right_mouse_down() {
     INPUT input;
     input.mi.dwFlags = MOUSEEVENTF_RIGHTDOWN;
-    click_mouse(&input);
+    update_mouse_button(&input);
+}
+
+void right_mouse_up() {
+    INPUT input;
+    input.mi.dwFlags = MOUSEEVENTF_RIGHTUP;
+    update_mouse_button(&input);
 }
 
 void move_mouse();
 
 int main() {
-    right_click_mouse();
-
     return 1;
 }
