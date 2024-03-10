@@ -32,6 +32,28 @@ void update_mouse_button(INPUT *input)
     SendInput(1, input, sizeof(INPUT));
 }
 
+void send_mouse_wheel_scroll(int direction)
+{
+    INPUT input;
+    input.type = INPUT_MOUSE;
+    input.mi.dwFlags = MOUSEEVENTF_WHEEL;
+    input.mi.mouseData = WHEEL_DELTA * direction;
+    // set mouse position
+    SendInput(1, &input, sizeof(INPUT));
+    SetCursorPos(mouse_x, mouse_y);
+}
+
+
+void send_key_input(int key, int is_down)
+{
+    INPUT input;
+    input.type = INPUT_KEYBOARD;
+    input.ki.wVk = key;
+    input.ki.dwFlags = is_down; // 0 || KEYEVENTF_EXTENDEDKEY
+    input.ki.time = 0;
+    SendInput(1, &input, sizeof(INPUT));
+}
+
 void left_mouse_down()
 {
     INPUT input;
@@ -111,26 +133,56 @@ wiimote *setup_remote()
 
 int handle_input(wiimote *remote)
 {
-    if (IS_JUST_PRESSED(remote, WIIMOTE_BUTTON_A))
-    {
+    if (IS_JUST_PRESSED(remote, 0x0008)) // A
+        send_key_input(VK_SPACE, 0);
+    else if (IS_RELEASED(remote, 0x00008))
+        send_key_input(VK_SPACE, KEYEVENTF_KEYUP);
+
+    if (IS_JUST_PRESSED(remote, 0x0004)) // B
+        send_key_input(VK_LSHIFT, 0);
+    else if (IS_RELEASED(remote, 0x0004))
+        send_key_input(VK_LSHIFT, KEYEVENTF_KEYUP);
+
+    // inven key
+    if (IS_JUST_PRESSED(remote, 0x0080)) // HOME
+        send_key_input('E', 0);
+    else if (IS_RELEASED(remote, 0x0080))
+        send_key_input('E', KEYEVENTF_KEYUP);
+
+    // wasd
+    if (IS_JUST_PRESSED(remote, 0x0800)) // UP
+        send_key_input('W', 0);
+    else if (IS_RELEASED(remote, 0x0800))
+        send_key_input('W', KEYEVENTF_KEYUP);
+    if (IS_JUST_PRESSED(remote, 0x0400)) // DOWN
+        send_key_input('S', 0);
+    else if (IS_RELEASED(remote, 0x0400))
+        send_key_input('S', KEYEVENTF_KEYUP);
+    if (IS_JUST_PRESSED(remote, 0x0100)) // LEFT
+        send_key_input('A', 0);
+    else if (IS_RELEASED(remote, 0x0100))
+        send_key_input('A', KEYEVENTF_KEYUP);
+    if (IS_JUST_PRESSED(remote, 0x0200)) // RIGHT
+        send_key_input('D', 0);
+    else if (IS_RELEASED(remote, 0x0200))
+        send_key_input('D', KEYEVENTF_KEYUP);
+
+    // scroll weel
+    if (IS_JUST_PRESSED(remote, 0x0002)) // 1
+        send_mouse_wheel_scroll(1);
+    if (IS_JUST_PRESSED(remote, 0x0001)) // 2
+        send_mouse_wheel_scroll(-1);
+
+    // left click
+    if (IS_JUST_PRESSED(remote, 0x0010)) // minus
         left_mouse_down();
-    }
-    else if (IS_RELEASED(remote, WIIMOTE_BUTTON_A))
-    {
+    else if (IS_RELEASED(remote, 0x0010))
         left_mouse_up();
-    }
-    if (IS_JUST_PRESSED(remote, WIIMOTE_BUTTON_B))
-    {
+    // mouse click
+    if (IS_JUST_PRESSED(remote, 0x1000)) // plus
         right_mouse_down();
-    }
-    else if (IS_RELEASED(remote, WIIMOTE_BUTTON_B))
-    {
+    else if (IS_RELEASED(remote, 0x1000))
         right_mouse_up();
-    }
-    if (IS_PRESSED(remote, 0x0010))
-    {
-        return 1;
-    }
 
     return 0;
 }

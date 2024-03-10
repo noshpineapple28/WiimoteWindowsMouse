@@ -6,6 +6,10 @@
 
 int get_mouse_position(POINT *cursor);
 
+void send_mouse_wheel_scroll(int direction);
+
+void send_key_input(int key, int is_down);
+
 void left_mouse_down();
 
 void left_mouse_up();
