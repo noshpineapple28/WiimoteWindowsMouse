@@ -10,6 +10,10 @@
 // wiiuse
 #include "wiiuse.h"
 
+// mouse pos
+static int mouse_x = 0;
+static int mouse_y = 0;
+
 int get_pos(POINT *cursor)
 {
     return GetCursorPos(cursor);
@@ -58,6 +62,8 @@ void right_mouse_up()
 
 void move_mouse(int dx, int dy)
 {
+    INPUT input;
+
     // mouse move input
     if (dx >= 4000000)
         dx = 0;
@@ -65,8 +71,16 @@ void move_mouse(int dx, int dy)
     if (dy >= 4000000)
         dy = 0;
 
-    // printf("x: %u, y: %u\t", dx, dy);
+    input.type = INPUT_MOUSE;
+    input.mi.dwFlags = MOUSEEVENTF_MOVE;
+    input.mi.dx = mouse_x - dx;
+    input.mi.dy = mouse_y - dy;
+    input.mi.time = 0;
+    SendInput(1, &input, sizeof(INPUT));
+
     SetCursorPos(dx, dy);
+    mouse_x = dx;
+    mouse_y = dy;
 }
 
 wiimote *setup_remote()
