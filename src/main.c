@@ -95,8 +95,8 @@ void move_mouse(int dx, int dy)
 
     input.type = INPUT_MOUSE;
     input.mi.dwFlags = MOUSEEVENTF_MOVE;
-    input.mi.dx = mouse_x - dx;
-    input.mi.dy = mouse_y - dy;
+    input.mi.dx = -1 * (mouse_x - dx);
+    input.mi.dy = -1 * (mouse_y - dy);
     input.mi.time = 0;
     SendInput(1, &input, sizeof(INPUT));
 
@@ -229,7 +229,7 @@ void read_remote(wiimote **remote)
             // handle movement
             int dx = remote[0]->ir.x;
             int dy = remote[0]->ir.y;
-            move_mouse((int)dx, (int)dy);
+            move_mouse((int)dx,(int)dy);
         }
     }
 }
