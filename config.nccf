@@ -1,3 +1,4 @@
+///////////////////////////////////////////////////////////////////////////////////////////
 // MOUSE_POS VALS:
 // this allows you to move the winodws mouse cursor using many different methods
 // WIIMOTE: use wiimote sensor bar
@@ -5,6 +6,8 @@
 // NONE: mouse wont be moved
 MOUSE_POS:
  MODE: NUNCHUK
+
+///////////////////////////////////////////////////////////////////////////////////////////
 // VALUES:
 // single lower case char: will send character key event
 // NO_INPUT (suggested if using NUNCHUK mouse movement to disable the c button),
@@ -22,6 +25,7 @@ WIIMOTE:
  HOME: ESCAPE
  ONE: SCROLL_UP_MOUSE
  TWO: SCROLL_DOWN_MOUSE
+///////////////////////////////////////////////////////////////////////////////////////////
 NUNCHUK:
  Z: q
  C: NO_INPUT
@@ -29,3 +33,14 @@ NUNCHUK:
  LEFT_ANALOG: NO_INPUT
  DOWN_ANALOG: NO_INPUT
  RIGHT_ANALOG: NO_INPUT
+
+///////////////////////////////////////////////////////////////////////////////////////////
+// Defaults to OFF if value is invalid or missing
+// LED LAYOUT, WIIMOTE FACING YOU
+// 1 2 3 4
+// 0 0 0 0
+LED_SETTINGS:
+ LED_1: ON
+ LED_2: OFF
+ LED_3: ON
+ LED_4: ON

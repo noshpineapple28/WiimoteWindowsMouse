@@ -10,22 +10,24 @@
 #define SCROLL_UP_MOUSE 0x6971
 #define SCROLL_DOWN_MOUSE 0x6972
 
-typedef enum MOUSE_POS {
+typedef enum MOUSE_POS
+{
     WIIMOTE = (int)0,
     NUNCHUK,
     NONE
 } MOUSE_POS;
-
 
 typedef enum PARSE_STATE
 {
     IN_POS,
     IN_WIIMOTE,
     IN_NUNCHUCK,
+    IN_LED,
     NO_PARSE
 } PARSE_STATE;
 
-typedef struct WIIMOTE_CONFIG {
+typedef struct WIIMOTE_CONFIG
+{
     int UP_D;
     int LEFT_D;
     int DOWN_D;
@@ -39,7 +41,8 @@ typedef struct WIIMOTE_CONFIG {
     int TWO;
 } WIIMOTE_CONFIG;
 
-typedef struct NUNCHUK_CONFIG {
+typedef struct NUNCHUK_CONFIG
+{
     int Z;
     int C;
     int UP_ANALOG;
@@ -48,10 +51,12 @@ typedef struct NUNCHUK_CONFIG {
     int RIGHT_ANALOG;
 } NUNCHUK_CONFIG;
 
-typedef struct nccf_config {
+typedef struct nccf_config
+{
     MOUSE_POS mouse_pos;
     WIIMOTE_CONFIG wiimote_conf;
     NUNCHUK_CONFIG nunchuck_conf;
+    int LED_STATE;
 } nccf_config;
 
 nccf_config *parse_nccf(nccf_config *conf, char *config_path);

@@ -47,6 +47,8 @@ PARSE_STATE parse_state(char *BUFFER)
         return IN_WIIMOTE;
     else if (!strcmp(BUFFER, "NUNCHUK:"))
         return IN_NUNCHUCK;
+    else if (!strcmp(BUFFER, "LED_SETTINGS:"))
+        return IN_LED;
     else
         return NO_PARSE;
 }
@@ -281,6 +283,45 @@ void parse_nunchuk(char *BUFFER, nccf_config *conf)
     option[i] = setting;
 }
 
+void parse_led(char *BUFFER, nccf_config *conf)
+{
+    char NAME[MAX_BUFF_LEN];
+    char VAL[MAX_BUFF_LEN];
+    get_option(BUFFER, NAME, VAL);
+    if (!strcmp(NAME, "LED_1"))
+    {
+        if (!strcmp(VAL, "ON")) {
+            printf("LED1 set on\n");
+            conf->LED_STATE += 1 << 4;
+        }
+    }
+    else if (!strcmp(NAME, "LED_2"))
+    {
+        if (!strcmp(VAL, "ON")) {
+            printf("LED2 set on\n");
+            conf->LED_STATE += 1 << 5;
+        }
+    }
+    else if (!strcmp(NAME, "LED_3"))
+    {
+        if (!strcmp(VAL, "ON")) {
+            printf("LED3 set on\n");
+            conf->LED_STATE += 1 << 6;
+        }
+    }
+    else if (!strcmp(NAME, "LED_4"))
+    {
+        if (!strcmp(VAL, "ON")) {
+            printf("LED4 set on\n");
+            conf->LED_STATE += 1 << 7;
+        }
+    }
+    else
+    {
+        printf("LED SETTING NAME %s is an invalid option\n", NAME);
+    }
+}
+
 nccf_config *parse_nccf(nccf_config *conf, char *config_path)
 {
     char BUFFER[MAX_BUFF_LEN];
@@ -316,6 +357,9 @@ nccf_config *parse_nccf(nccf_config *conf, char *config_path)
             case IN_NUNCHUCK:
                 parse_nunchuk(BUFFER, conf);
                 break;
+            case IN_LED:
+                parse_led(BUFFER, conf);
+                break;
             default:
                 break;
             }
@@ -330,10 +374,11 @@ nccf_config *parse_nccf(nccf_config *conf, char *config_path)
     return conf;
 }
 
-// void notmain(int argc, char *argv[])
+// void main(int argc, char *argv[])
 // {
 //     nccf_config act = {0};
 //     parse_nccf(&act, argv[argc - 1]);
+
 //     printf("MOUSE_POS set to %ld\n\n", act.mouse_pos);
 
 //     printf("WIIMOTE A set to %ld\n", act.wiimote_conf.A);
@@ -353,5 +398,7 @@ nccf_config *parse_nccf(nccf_config *conf, char *config_path)
 //     printf("NUNCHUK DOWN_ANALOG set to %ld\n", act.nunchuck_conf.DOWN_ANALOG);
 //     printf("NUNCHUK RIGHT_ANALOG set to %ld\n", act.nunchuck_conf.RIGHT_ANALOG);
 //     printf("NUNCHUK Z set to %ld\n", act.nunchuck_conf.Z);
-//     printf("NUNCHUK C set to %ld\n", act.nunchuck_conf.C);
+//     printf("NUNCHUK C set to %ld\n\n", act.nunchuck_conf.C);
+
+//     printf("LEDS SET TO %d\n", act.LED_STATE >> 4);
 // }

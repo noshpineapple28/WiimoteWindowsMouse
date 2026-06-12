@@ -165,7 +165,7 @@ wiimote *setup_remote()
         return 0;
     }
     wiimote *remote = wiimotes_found[0];
-    wiiuse_set_leds(remote, 0x00);
+    wiiuse_set_leds(remote, 0b1001);
 
     return remote;
 }
@@ -515,9 +515,9 @@ void main(int argc, char *argv[])
     wiimote *remote = setup_remote();
 
     wiiuse_rumble(remote, 1);
-    wiiuse_set_leds(&remote, 1);
     Sleep(200);
     wiiuse_rumble(remote, 0);
+    wiiuse_set_leds(remote, configs.LED_STATE);
     read_remote(&remote);
     wiiuse_cleanup(&remote, 1);
 
