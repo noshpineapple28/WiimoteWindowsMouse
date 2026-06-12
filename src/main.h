@@ -20,6 +20,4 @@ void right_mouse_up();
 
 void move_mouse();
 
-int main();
-
 #endif

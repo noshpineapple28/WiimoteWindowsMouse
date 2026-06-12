@@ -1,7 +1,9 @@
 include_directories(../lib)
 set(SOURCES
 main.h
-main.c)
+main.c
+nccf.h
+nccf.c)
 add_executable(wiimote_windows_mouse ${SOURCES})
 target_link_libraries(wiimote_windows_mouse wiiuse)
 
