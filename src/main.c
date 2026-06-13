@@ -92,7 +92,7 @@ void right_mouse_up()
 
 void move_mouse(int dx, int dy)
 {
-    INPUT input;
+    INPUT input = {0};
 
     // mouse move input
     if (dx >= 4000000)
@@ -101,37 +101,45 @@ void move_mouse(int dx, int dy)
     if (dy >= 4000000)
         dy = mouse_y;
 
+    // set change
+    if (configs.mouse_pos == NUNCHUK)
+    {
+        // set dx
+        input.mi.dx = (dx - mouse_x) * 1.5;
+        input.mi.dy = (dy - mouse_y) * 1.5;
+    }
+    else if (configs.mouse_pos == WIIMOTE)
+    {
+        // right half
+        if (mouse_x >= (1920 / 2) * 1.5)
+        input.mi.dx = 5;
+        else if (mouse_x >= (1920 / 2) * 1.75)
+        input.mi.dx = 10;
+        // left half
+        else if (mouse_x <= (1920 / 2) * .75)
+        input.mi.dx = -5;
+        else if (mouse_x <= (1920 / 2) * .5)
+        input.mi.dx = -10;
+        else
+        input.mi.dx = 0;
+        // set dy
+        // bottom half
+        if (mouse_y >= (1080 / 2) * 1.5)
+        input.mi.dy = 5;
+        else if (mouse_y >= (1080 / 2) * 1.75)
+        input.mi.dy = 10;
+        // top half
+        else if (mouse_y <= (1080 / 2) * .75)
+        input.mi.dy = -5;
+        else if (mouse_y <= (1080 / 2) * .5)
+        input.mi.dy = -10;
+        else
+        input.mi.dy = 0;
+    }
+
     // set cursor pos
     mouse_x = dx;
     mouse_y = dy;
-    // set change
-    // set dx
-    // right half
-    if (mouse_x >= (1920 / 2) * 1.5)
-        input.mi.dx = 5;
-    else if (mouse_x >= (1920 / 2) * 1.75)
-        input.mi.dx = 10;
-    // left half
-    else if (mouse_x <= (1920 / 2) * .75)
-        input.mi.dx = -5;
-    else if (mouse_x <= (1920 / 2) * .5)
-        input.mi.dx = -10;
-    else
-        input.mi.dx = 0;
-    // set dy
-    // bottom half
-    if (mouse_y >= (1080 / 2) * 1.5)
-        input.mi.dy = 5;
-    else if (mouse_y >= (1080 / 2) * 1.75)
-        input.mi.dy = 10;
-    // top half
-    else if (mouse_y <= (1080 / 2) * .75)
-        input.mi.dy = -5;
-    else if (mouse_y <= (1080 / 2) * .5)
-        input.mi.dy = -10;
-    else
-        input.mi.dy = 0;
-
     input.type = INPUT_MOUSE;
     input.mi.dwFlags = MOUSEEVENTF_MOVE;
     // input.mi.dx = -1 * (mouse_x - dx);
@@ -180,12 +188,12 @@ int handle_joystick_mouse(float x, float y)
 
     // thresholds
     float threshhold = 0.5;
-    float speed = 10;
+    float speed = (float)configs.nunchuck_conf.SPEED * 0.1;
     // get mouse pos
     POINT cursor;
-    get_pos(&cursor);
-    int dx = cursor.x;
-    int dy = cursor.y;
+    // get_pos(&cursor);
+    int dx = mouse_x;
+    int dy = mouse_y;
 
     // x pos held
     if (x > threshhold)
@@ -395,6 +403,7 @@ int handle_input(wiimote *remote)
     handle_input_wiimote(remote, configs.wiimote_conf.LEFT_D, 0x0100);
     handle_input_wiimote(remote, configs.wiimote_conf.RIGHT_D, 0x0200);
     handle_input_wiimote(remote, configs.wiimote_conf.ONE, 0x0002);
+    handle_input_wiimote(remote, configs.wiimote_conf.HOME, 0x0080);
     handle_input_wiimote(remote, configs.wiimote_conf.TWO, 0x0001);
     handle_input_wiimote(remote, configs.wiimote_conf.MINUS, 0x0010);
     handle_input_wiimote(remote, configs.wiimote_conf.PLUS, 0x1000);

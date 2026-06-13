@@ -12,27 +12,28 @@ MOUSE_POS:
 // single lower case char: will send character key event
 // NO_INPUT (suggested if using NUNCHUK mouse movement to disable the c button),
 // LSHIFT, RSHIFT, LALT, RALT, ESCAPE, SPACE, MOUSE_LEFT,
-// MOUSE_RIGHT, SCROLL_UP_MOUSE, SCROLL_DOWN_MOUSE
+// MOUSE_RIGHT, SCROLL_UP_MOUSE, SCROLL_DOWN_MOUSE, LCONTROL, RCONTROL
 WIIMOTE:
- UP_D: r
- LEFT_D: b
- DOWN_D: f
- RIGHT_D: e
+ UP_D: 2
+ LEFT_D: 1
+ DOWN_D: LCONTROL
+ RIGHT_D: 3
  A: SPACE
  B: LSHIFT
  MINUS: MOUSE_LEFT
- PLUS: MOUSE_RIGHT
- HOME: ESCAPE
+ PLUS: e
+ HOME: TAB
  ONE: SCROLL_UP_MOUSE
  TWO: SCROLL_DOWN_MOUSE
 ///////////////////////////////////////////////////////////////////////////////////////////
 NUNCHUK:
- Z: q
+ Z: NO_INPUT
  C: NO_INPUT
- UP_ANALOG: NO_INPUT
- LEFT_ANALOG: NO_INPUT
- DOWN_ANALOG: NO_INPUT
- RIGHT_ANALOG: NO_INPUT
+ UP_ANALOG: w
+ LEFT_ANALOG: a
+ DOWN_ANALOG: s
+ RIGHT_ANALOG: d
+ SPEED: 1
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 // Defaults to OFF if value is invalid or missing
@@ -42,5 +43,5 @@ NUNCHUK:
 LED_SETTINGS:
  LED_1: ON
  LED_2: OFF
- LED_3: ON
+ LED_3: OFF
  LED_4: ON

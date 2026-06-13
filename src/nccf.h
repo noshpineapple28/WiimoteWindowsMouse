@@ -49,6 +49,7 @@ typedef struct NUNCHUK_CONFIG
     int LEFT_ANALOG;
     int DOWN_ANALOG;
     int RIGHT_ANALOG;
+    int SPEED;
 } NUNCHUK_CONFIG;
 
 typedef struct nccf_config

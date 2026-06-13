@@ -111,6 +111,10 @@ int parse_vk_option(char *BUFFER)
     {
         option = VK_LCONTROL;
     }
+    else if (!strcmp(BUFFER, "TAB"))
+    {
+        option = VK_TAB;
+    }
     else if (!strcmp(BUFFER, "RCONTROL"))
     {
         option = VK_RCONTROL;
@@ -247,13 +251,14 @@ void parse_nunchuk(char *BUFFER, nccf_config *conf)
         "LEFT_ANALOG",
         "DOWN_ANALOG",
         "RIGHT_ANALOG",
+        "SPEED",
     };
 
     // figure out which setting we're picking
     int *option = ((int *) conf) + 11;
     // loop for every item, the ptr should move in turn
     int i = 0;
-    while (i < 7)
+    while (i < 8)
     {
         // this finds which field we r looking for
         if (!strcmp(NAME, OPTIONS[i++])) {
@@ -261,7 +266,7 @@ void parse_nunchuk(char *BUFFER, nccf_config *conf)
         }
     }
     // this means its an invalid field
-    if (i >= 7) return;
+    if (i >= 8) return;
 
     int setting = 0;
     if (strlen(VAL) == 1)
